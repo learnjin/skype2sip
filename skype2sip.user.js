@@ -4,7 +4,8 @@
 // @description clickable telephone numbers (SIP)
 // @include     https://crm.zoho.com/*
 // @match       https://crm.zoho.com/crm/*
-// @version     1
+// @version     0.6
+// @grant       none
 // ==/UserScript==
 
 var pageURLCheckTimer = setInterval (
@@ -23,29 +24,25 @@ var pageURLCheckTimer = setInterval (
 );
 
 function gmMain () {
-    if (window.self === window.top)
+    //if (window.self === window.top) 
         alert ('"New" main (top) page loaded.');
-    else
-        alert ('"New" iframed page loaded.');
-    regex = /skype:[\+]*(\d[\d\s\/]*\d).*/gi
-    replace ="sip:$1"
+    //else
+    //    alert ('"New" iframed page loaded.');
     
-    a=document.getElementById("headervalue_Phone").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace)
-    a=document.getElementById("headervalue_Mobile").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace)
-     a=document.getElementById("headervalue_Other").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace) //untestet kein Beispiel gefunden
-    a=document.getElementById("headervalue_Home").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace) //untestet kein Beispiel gefunden
+    regex = /skype:[\+]*(\d[\d\s\/\(\)]*\d).*/gi;
+    replace ="sip:$1";
     
-    a=document.getElementById("value_Phone").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace)
-    a=document.getElementById("value_Mobile").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace)
-    a=document.getElementById("value_Other").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace) //untestet kein Beispiel gefunden
-    a=document.getElementById("value_Home").getElementsByTagName('a')[0]
-    a.href=a.href.replace(regex,replace) //untestet kein Beispiel gefunden
-    
+    var index;
+    var ids = ["headervalue_Phone","value_Phone","headervalue_Mobile", "headervalue_Other","headervalue_Home","value_Mobile","value_Other","value_Home"];
+    for (index = 0; index < ids.length; ++index) {
+        a=document.getElementById(ids[index]);
+        if (a !== undefined) {
+            a=a.getElementsByTagName('a')[0];
+            alert(ids[index] + ": " +a);
+            if (a !== undefined) {
+                a.href=a.href.replace(regex,replace);
+                //alert(ids[index] +": "+ a);
+            }
+        }
+    }
 }
